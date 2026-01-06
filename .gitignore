@@ -1,2 +1,12 @@
-# Ignore terraform
-.terraform/
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.backup
+terraform/*.tfvars
+terraform/*.tfvars.json
+
+# OS / Editor
+.DS_Store
+.idea/
+.vscode/
