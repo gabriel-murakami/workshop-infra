@@ -1,3 +1,5 @@
+resource "kubectl_manifest" "datadog_agent" {
+  yaml_body = <<YAML
 kind: "DatadogAgent"
 apiVersion: "datadoghq.com/v2alpha1"
 metadata:
@@ -11,13 +13,17 @@ spec:
       apiSecret:
         secretName: "datadog-secret"
         keyName: "api-key"
+
   features:
     dogstatsd:
       nonLocalTraffic: true
+
     clusterChecks:
       enabled: true
+
     orchestratorExplorer:
       enabled: true
+
     apm:
       enabled: true
       hostPortConfig:
@@ -33,12 +39,25 @@ spec:
               php: "1"
               dotnet: "3"
               ruby: "2"
+
     logCollection:
       enabled: true
       containerCollectAll: true
+
+    processMonitoring:
+      enabled: false
+
+    systemProbe:
+      enabled: false
+
   override:
     nodeAgent:
       containers:
+        system-probe:
+          disabled: true
+        process-agent:
+          disabled: true
+
         agent:
           env:
             - name: DD_APM_NON_LOCAL_TRAFFIC
@@ -58,3 +77,15 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: spec.nodeName
+
+            - name: DD_PROCESS_AGENT_ENABLED
+              value: "false"
+            - name: DD_SYSTEM_PROBE_ENABLED
+              value: "false"
+
+YAML
+
+  depends_on = [
+    helm_release.datadog_operator
+  ]
+}
