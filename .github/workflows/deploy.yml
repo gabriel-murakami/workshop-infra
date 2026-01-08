@@ -7,11 +7,18 @@ jobs:
   apply:
     runs-on: self-hosted
 
+    env:
+      TF_VAR_datadog_api_key: ${{ secrets.DATADOG_API_KEY }}
+
     steps:
       - uses: actions/checkout@v4
 
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.12.2
-      - run: terraform -chdir=terraform init -input=false
-      - run: terraform -chdir=terraform apply -auto-approve
+
+      - name: Terraform Init
+        run: terraform -chdir=terraform init -input=false
+
+      - name: Terraform Apply
+        run: terraform -chdir=terraform apply -auto-approve
