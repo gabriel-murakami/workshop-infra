@@ -3,7 +3,6 @@
 ## Visão Geral
 
 Este repositório é responsável por **provisionar a infraestrutura compartilhada do cluster Kubernetes** utilizado no projeto **Projeto Tech Challenge – Arquitetura de Software**.
-
 Ele contém toda a base necessária para que as aplicações funcionem corretamente, incluindo:
 - Ingress Controller
 - API Gateway
