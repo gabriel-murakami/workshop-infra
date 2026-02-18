@@ -13,6 +13,19 @@ resource "kubernetes_ingress_v1" "health" {
   spec {
     rule {
       http {
+        path {
+          path      = "/catalog_service/up"
+          path_type = "ImplementationSpecific"
+
+          backend {
+            service {
+              name = "catalog-service"
+              port {
+                number = 3000
+              }
+            }
+          }
+        }
 
         path {
           path      = "/order_service/up"
